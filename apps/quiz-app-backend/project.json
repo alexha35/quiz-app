@@ -1,0 +1,60 @@
+{
+  "name": "quiz-app-backend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/quiz-app-backend/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/quiz-app-backend",
+        "main": "apps/quiz-app-backend/src/main.ts",
+        "tsConfig": "apps/quiz-app-backend/tsconfig.app.json",
+        "assets": ["apps/quiz-app-backend/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/quiz-app-backend/src/environments/environment.ts",
+              "with": "apps/quiz-app-backend/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "quiz-app-backend:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "quiz-app-backend:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/quiz-app-backend/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/quiz-app-backend"],
+      "options": {
+        "jestConfig": "apps/quiz-app-backend/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
